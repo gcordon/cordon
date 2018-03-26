@@ -1,0 +1,37 @@
+@white: #FFFFFF;
+* {
+  box-sizing: border-box;
+
+}
+a {
+  text-decoration: none;
+  color: @white;
+}
+.clearfix:after,.clearfix:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+// 鼠标选中字体颜色
+/* webkit, opera, IE9 */
+::selection { background:#FF9999; }
+/* mozilla firefox */
+::-moz-selection { background:#FF9999; }
+img {
+    display: block;
+}
+a:hover {
+    color: #ff3030;
+}
+button {
+    border: none;
+    cursor: pointer;
+}
+body,html {
+    background-color: #f4f4f4;
+   font-family: "Microsoft YaHei UI Light", "Microsoft JhengHei Light", "Segoe UI Light", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
+}
+body,html,h1,h2,h3,h4,h5,p,span,form,#app,img,ul,li,hgroup,figure {
+  margin: 0;
+  padding: 0;
+}
+ul,li,ol {
+    list-style: none;
+}
+

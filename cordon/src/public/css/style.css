@@ -1,0 +1,8 @@
+.container {
+    width: 80%;
+    margin: 0 auto;
+    position: relative;
+}
+body {
+    background-image: none!important;
+}
