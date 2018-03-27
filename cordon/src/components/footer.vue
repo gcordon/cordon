@@ -1,5 +1,6 @@
 <template>
-    <div id="footer" class="clearfix" >
+
+    <div id="footer" style="clear:both:" >
         <div class="clearfix"></div>
         <footer>
                 <p>
@@ -28,6 +29,7 @@
     width: 100%;
     height: 100%;
     font-size: 13px;
+    margin-top: 50px;
     text-align: center;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     background-color: rgba(0,0,0,0.8);

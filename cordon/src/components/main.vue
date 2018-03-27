@@ -1,7 +1,8 @@
 <template>
-    <div id="main" class="clearfix">
+    <div id="main">
         <div class="container">
-            <div class="article-list">
+            <!-- 文章 -->
+            <div class="article-list" id="article">
                 <article>
                     <hgroup class="title">
                         <h2>
@@ -18,28 +19,9 @@
                         子元素垂直居中的两种实现，效果叠加实现标签效果。
                         /* 垂直居中嵌套效果 */ html,...
                     </section>
-
-                    <button class="all">阅读全文</button>
-                </article>
-
-                <article>
-                    <hgroup class="title">
-                        <h2>
-                            <a href="">jQuery源码分析</a>
-                        </h2>
-                        <p>发布于 2017-12-05 21:56:03</p>
-                         <span class="type">
-                             <a href="">JS</a>
-                         </span>
-                    </hgroup>
-                    <section>
-                        实现效果
-                        页面单元素垂直居中，作为一个垂直居中的最外层容器（需要对html和body有所设置）。
-                        子元素垂直居中的两种实现，效果叠加实现标签效果。
-                        /* 垂直居中嵌套效果 */ html,...
-                    </section>
-
-                    <button class="all">阅读全文</button>
+                    <button class="all">
+                        <a href="./article?articleId=111111111111">阅读全文</a>
+                    </button>
                 </article>
 
                 <div class="flip">
@@ -51,7 +33,9 @@
                     </button>
                 </div>
             </div>
+            <!-- 侧边： 个人-留言-标签 -->
             <div class="aside">
+                <!-- 个人 -->
                 <section class="personal">
                     <hgroup>
                         <h2>Cordon</h2>
@@ -95,9 +79,86 @@
                         </figcaption>
                     </figure>
                 </section>
+                <!-- 留言 -->
+                <!-- 这里只帅选10条数据 -->
+                <section class="message">
+                    <ul>
+                        <li class="message-title">
+                            <h3>留言</h3>
+                        </li>
+                        <li class="message-item">
+                            <a href="javascript:;">
+                                <div class="message-i-image">
+                                    <img src="../public/img/me.jpg" alt="">
+                                </div>
+                                <div class="message-i-content">
+                                    <p>Title</p>
+                                    <p>Content</p>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="message-item">
+                            <a href="javascript:;">
+                                <div class="message-i-image">
+                                    <img src="../public/img/me.jpg" alt="">
+                                </div>
+                                <div class="message-i-content">
+                                    <p>Title</p>
+                                    <p>Content</p>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="message-item">
+                            <a href="javascript:;">
+                                <div class="message-i-image">
+                                    <img src="../public/img/me.jpg" alt="">
+                                </div>
+                                <div class="message-i-content">
+                                    <p>Title</p>
+                                    <p>Content</p>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="message-item">
+                            <a href="javascript:;">
+                                <div class="message-i-image">
+                                    <img src="../public/img/me.jpg" alt="">
+                                </div>
+                                <div class="message-i-content">
+                                    <p>Title</p>
+                                    <p>Content</p>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </section>
+                <section class="label">
+                    <ul>
+                        <li class="label-title">
+                            <h3>标签</h3>
+                        </li>
+                        <li>
+                            <span>
+                                <a href="javascript:;">杂谈</a>
+                            </span>
+                            <span>
+                                <a href="javascript:;">JS</a>
+                            </span>
+                            <span>
+                                <a href="javascript:;">Node</a>
+                            </span>
+                            <span>
+                                <a href="javascript:;">HTML5</a>
+                            </span>
+                        </li>
+                    </ul>
+                </section>
             </div>
         </div>
+         <div class="clearfix">
+        </div>
     </div>
+
 </template>
 <script>
     export default {
@@ -176,7 +237,7 @@
     padding: 30px;
 }
 
-#main .article-list article button.all {
+#main .article-list article button.all,#main .article-list article button.all > a {
     background-color: #96e1fc;
     padding: 6px 12px;
     color: #ffffff;
@@ -211,8 +272,9 @@
 // aside侧边栏
 #main .aside {
     width: 30%;
+    height: 100%;
     max-width: 30%;
-    background: #fcfcfc;
+    // background: #fcfcfc;
     float: right;
     padding-left: 30px;
 }
@@ -238,10 +300,9 @@
 #main .aside section.personal figure figcaption {
     float: left;
     padding-left: 16px;
-    width: 70%;
+    width: 60%;
     height: 100%;
     letter-spacing: 1px;
-
 }
 #main .aside section.personal figure figcaption hgroup > h2 {
     color: #3a8bbb;
@@ -274,4 +335,116 @@
 #main .aside section.personal figure figcaption .iconfont-show .iconfont-show-jianli {
     color: rgb(128, 185, 83);
 }
+// 留言
+#main .aside section.message {
+    margin: 50px 0;
+}
+#main .aside section.message ul {
+
+}
+#main .aside section.message ul li.message-title {
+    height: 25px;
+    border-bottom: 3px solid #ddd;
+    margin-bottom: 10px;
+}
+#main .aside section.message ul li.message-title h3 {
+    font-size: 13px;
+    color: #ccc;
+}
+#main .aside section.message ul li.message-item {
+    border-bottom: 1px dashed #999;
+    height: 40px;
+    padding: 10px 0;
+    box-sizing: content-box!important; // 让padding占距离
+}
+#main .aside section.message ul li.message-item > a{
+    color: #999;
+}
+// 留言者头像
+#main .aside section.message ul li.message-item .message-i-image {
+    height: 100%;
+    width: 14%;
+    float: left;
+    margin-right: 10px;
+}
+#main .aside section.message ul li.message-item .message-i-image img {
+    width: 100%;
+    height: 100%;
+    border-radius: 10%;
+}
+#main .aside section.message ul li.message-item .message-i-content {
+    font-size: 12px;
+}
+#main .aside section.message ul li.message-item .message-i-content > p:first-child {
+    color: #333;
+    font-size: 14px;
+    font-weight: bold;
+}
+// 标签
+#main .aside section.label ul {
+
+}
+#main .aside section.label ul li.label-title {
+    height: 25px;
+    border-bottom: 3px solid #ddd;
+    margin-bottom: 10px;
+}
+#main .aside section.label ul li.label-title h3 {
+    font-size: 13px;
+    color: #ccc;
+}
+#main .aside section.label ul span {
+    display: inline-block;
+    margin: 8px;
+    border-radius: 40%;
+    background-color: #eee;
+}
+#main .aside section.label ul span > a {
+    display: block;
+    padding:5px 20px;
+    color: #333;
+    font-family: 'Times New Roman', Times, serif;
+}
+// 兼容手机，平板，电脑
+@media screen and (max-width:480px) {
+     #main .aside {
+        display: none;
+    }
+    // 文章列表
+    #main .article-list {
+        width: 480px!important;
+        max-width: 480px!important;
+        border-radius: normal;
+    }
+    #main .aside {
+        display: none;
+    }
+    .container {
+        background-color: red;
+        width: 100%!important;
+        padding: 0;
+        margin: 0;
+    }
+}
+@media screen and (max-width:768px) {
+     #main .aside {
+        display: none;
+    }
+    // 文章列表
+    #main .article-list {
+        width: 750px;
+        max-width: 750px!important;
+        border-radius: normal;
+    }
+    #main .aside {
+        display: none;
+    }
+    .container {
+        background-color: red;
+        width: 100%!important;
+        padding: 0;
+        margin: 0;
+    }
+}
+
 </style>

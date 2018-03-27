@@ -1,0 +1,15 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Marked in the browser</title>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script> 
+</head>
+<body>
+  <div id="content"></div>
+  <script>
+    document.getElementById('content').innerHTML =
+      marked('> * 撰写发布学术论文（LaTeX 公式支持）');
+  </script> 
+</body>
+</html>
