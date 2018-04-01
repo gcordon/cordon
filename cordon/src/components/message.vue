@@ -10,11 +10,11 @@
     </div>
 </template>
 <script>
-import BlogHeader from './header.vue'
-import BlogFooter from './footer.vue'
+import BlogHeader from './blog-header.vue'
+import BlogFooter from './blog-footer.vue'
 import MessageMain from './message-main.vue'
     export default {
-        name: 'blog',
+        name: 'message',
         data() {
             return {
 

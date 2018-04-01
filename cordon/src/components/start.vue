@@ -23,6 +23,19 @@
   </div>
 </template>
 <script>
+export default {
+    name: 'start',
+    data() {
+        return {
+
+        }
+    },
+    mounted() {
+    },
+    methods: {
+
+    }
+}
 window.onload = function() {
     const log = console.log.bind(console)
     const e = el => document.querySelector(el)

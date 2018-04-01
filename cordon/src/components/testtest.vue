@@ -1,10 +1,9 @@
 <template>
     <div id="blog">
-        <link rel="stylesheet" href="http://at.alicdn.com/t/font_604071_m8m5gwomj3v7vi.css">
+        <link rel="stylesheet" href="http://at.alicdn.com/t/font_604071_dqkf3ecocfupu8fr.css">
         <!-- 头部导航 -->
         <blog-header></blog-header>
-        <!-- 文章详情 -->
-        <article-main></article-main>
+        <blog-main></blog-main>
         <!-- 底部版权 -->
         <blog-footer></blog-footer>
     </div>
@@ -12,9 +11,9 @@
 <script>
 import BlogHeader from './blog-header.vue'
 import BlogFooter from './blog-footer.vue'
-import ArticleMain from './article-main.vue'
+import BlogMain from './main.vue'
     export default {
-        name: 'article',
+        name: 'blog',
         data() {
             return {
 
@@ -23,7 +22,7 @@ import ArticleMain from './article-main.vue'
         components: {
             BlogHeader,
             BlogFooter,
-            ArticleMain,
+            BlogMain,
         }
     }
 </script>

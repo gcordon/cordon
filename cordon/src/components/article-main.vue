@@ -3,53 +3,62 @@
         <!-- bootstrap 引入 -->
         <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.css" rel="stylesheet">
         <!--  -->
-        <div class="article-content">
+        <vue-loading v-show="loading" type="bars" color="#d9544e" :size="{ width: '50px', height: '50px' }"></vue-loading>
+        <div class="article-content" v-if="articleResult">
             <article>
                 <hgroup>
-                    <h2>
-                        css垂直居中总结
+                    <h2 v-text="articleResult.title">
                     </h2>
                     <p>
                         <span class="author">
-                            by JhonXY
+                            {{articleResult.author}}
                         </span>
                             |
                         <span class="date">
-                             2017-09-13 12:16:35
+                            {{articleResult.date}}
+                        </span>
+                        <span>
+                            <i class="iconfont icon-zhiboguankanshu"></i>
                         </span>
                     </p>
                 </hgroup>
-                <section v-html="compiledMarkdown">
+                <section v-html="articleResult.content">
 
-                    </section>
+                </section>
             </article>
         </div>
     </div>
 </template>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script>
-import marked from 'marked'
 // jquery bootstrap 引入
 import 'jquery/dist/jquery.min.js'
-import 'bootstrap/dist/css/bootstrap.min.css'
-import 'bootstrap/dist/js/bootstrap.min.js'
-
-
+import marked from 'marked'
+import axios from 'axios'
+// jquery bootstrap 引入
+import 'jquery/dist/jquery.min.js'
+// loading template
+import vueLoading from 'vue-loading-template'
 export default {
+    name: 'articleMain',
     data() {
         return {
-            input: `> * 整理知识，学习笔记
-> * 发布日记，杂文，所见所想
-> * 撰写发布技术文稿（代码支持）
-> * 撰写发布学术论文（LaTeX 公式支持）`
+            articleResult: null,
+            loading: true, // loding效果的boolean
         }
+    },
+    components: {
+        vueLoading,
     },
     mounted() {
         this.markdown()
+        // 获取文章数据
+        this.getArticleData()
     },
     computed: {
-        compiledMarkdown: function () {
-            console.log(marked(this.input, { sanitize: true }))
-            return marked(this.input, { sanitize: true })
+        // 解析markdown
+        compiledMarkdown: function (data) {
+            return marked(data, { sanitize: true })
         }
     },
     methods: {
@@ -64,7 +73,26 @@ export default {
                 smartLists: true,
                 smartypants: false
             });
-        }
+        },
+        getArticleData() {
+            let that = this
+            axios.get(`/api${this.$route.fullPath}`)
+                .then(result=> {
+                    if (result.data.status == '1') {
+                        that.$router.redirect('/')
+                    }
+                    if (!result) {
+                        throw new Error(`getArticleData Error: ${JSON.stringify(result)}`)
+                    }
+                    this.loading = false
+                    var data = result.data.result
+                    that.articleResult = data
+                    that.articleResult.content = marked(that.articleResult.content)
+                })
+                .catch(err => {
+                    console.log('getArticleData Error:',err)
+                })
+        },
     }
 }
 </script>
@@ -83,7 +111,6 @@ export default {
 #article .article-content {
     width: 100%;
     min-width: 70%;
-    height: 100%;
     min-height: 500px;
     box-shadow: 1px 1px 2px rgba(0,0,0,.08);
     background-color: #fff;
@@ -116,5 +143,8 @@ export default {
 #article .article-content article hgroup span.author {
     color: #333;
     font-family: Arial, Helvetica, sans-serif;
+}
+#article .article-content p img {
+    width: 100%;
 }
 </style>

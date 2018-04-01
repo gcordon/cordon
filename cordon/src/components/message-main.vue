@@ -2,13 +2,16 @@
   <div id="message" class="container-article">
         <div class="message-form">
             <h2>Leave a Reply</h2>
-            <textarea name="" id="" cols="30" rows="10"></textarea>
+            <textarea name="" ref="userContent" id="" cols="30" rows="10"></textarea>
             <p class="clearfix">
-                <input type="text" placeholder="起个名吧！">
-                <input type="text" placeholder="你的邮箱哦！">
+                <input type="text" ref="userName" placeholder="起个名吧！">
+                <input type="text" ref="userEmail" placeholder="你的邮箱哦！">
             </p>
             <p>
-                <button>发布评论</button>
+                <button @click="sendMessage()" >发布评论</button>
+            </p>
+            <p>
+                <!-- 提示 -->
             </p>
         </div>
         <div class="message-content clearfix" >
@@ -54,7 +57,56 @@
   </div>
 </template>
 <script>
+import validator from 'validator' // 验证
+export default {
+    name: 'message-main',
+    data() {
+        return {
 
+        }
+    },
+    mounted() {
+
+    },
+    methods: {
+        // 提交评论
+        sendMessage() {
+            // 检测表单
+            let refs = this.$refs
+            let [c, n, e] = [refs.userContent.value, refs.userName.value, refs.userEmail.value]
+            if (!validator.trim(c)) {
+                this.alertMessage('内容 为空！┭┮﹏┭┮', 'warning')
+                return false
+            }
+            if (!validator.trim(n)) {
+                this.alertMessage('姓名 为空！┭┮﹏┭┮', 'warning')
+                return false
+            }
+            if (!validator.trim(e)) {
+                this.alertMessage('邮箱 为空！┭┮﹏┭┮', 'warning')
+                return false
+            }
+            if (!validator.isEmail(e)) {
+                this.alertMessage('邮箱 类型不对！(⊙o⊙)…', 'info')
+                return false
+            }
+            this.alertMessage('评论成功', 'success')
+        },
+        // elementUi 提示框
+        alertMessage(ctx, type) {
+            this.$message({
+                message: `${ctx}`,
+                type: type,
+                showClose: true,
+                duration: 1200
+            })
+        },
+        // 提交到node后台
+        sendMessage() {
+
+        }
+    }
+}
 </script>
 <style lang="less">
 #cordon {

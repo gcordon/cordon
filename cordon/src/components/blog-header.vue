@@ -1,36 +1,45 @@
 <template>
     <div id="header" class="clearfix">
-        <header class="headerShow headerHeightShow " ref="header" >
+        <header class="headerShow headerHeightShow ">
             <nav class="container">
                 <ul>
                     <li>
-                        <a href="./" >
+                        <router-link to="/blog">
                             <i class="iconfont icon-shouye1-copy"></i>
                             首页
-                        </a>
+                        </router-link>
                     </li>
                     <li>
-                        <a href="./" id="classification" @mouseenter="HoverClassification" @mouseleave="tHoverClassification">
+                        <a href="javascript:;" @click="goBlog" id="classification" @mouseenter="HoverClassification" @mouseleave="tHoverClassification">
                             <i class="iconfont icon-shezhi-tianchong"></i>
                             分类
                             <ul v-show="is_classification">
-                                <li><a href="javascript:;">前 端</a></li>
-                                <li><a href="javascript:;">后 端</a></li>
-                                <li><a href="javascript:;">杂 谈</a></li>
+                                 <li>
+                                    <a href="javascript:;" @click="getOne('all')">所 有</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;" @click="getOne('q')">前 端</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;" @click="getOne('h')">后 端</a>
+                                </li>
+                                <li>
+                                     <a href="javascript:;" @click="getOne('z')">杂 谈</a>
+                                </li>
                             </ul>
                         </a>
                     </li>
                     <li>
-                        <a href="./" >
+                        <router-link to="/message">
                             <i class="iconfont icon-message"></i>
                             留言
-                        </a>
+                        </router-link>
                     </li>
                     <li>
-                        <a href="./" >
+                        <router-link to="/about">
                             <i class="iconfont icon-guanyuwomen"></i>
                             关于我
-                        </a>
+                        </router-link>
                     </li>
                 </ul>
             </nav>
@@ -67,6 +76,14 @@
             init() {
 
             },
+            getOne(tag) { // 分类 父子传递，blog.vue 使用 blog-header,然后接受这个getOne的传递再次从数据库里拿取需要的类型
+                this.$emit('shareOne', tag)
+                this.$router.push({path: '/blog'})
+            },
+            // 跳转到blog
+            goBlog() {
+                this.$router.push({path: '/blog'})
+            }
         },
         mounted() {
         }

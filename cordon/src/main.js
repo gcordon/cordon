@@ -10,14 +10,15 @@ import 'element-ui/lib/theme-chalk/index.css';
 import 'jquery/dist/jquery.min.js'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap.min.js'
-// element ui
-
+// axios 后台接口
+import axios from 'axios'
 
 // 图片懒加载vue-lazyload
 import router from './router'
 
 // element ui
 Vue.use(ElementUI)
+// axios
 
 
 Vue.config.productionTip = false
