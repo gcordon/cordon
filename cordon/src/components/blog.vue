@@ -27,7 +27,7 @@
                     </section>
                     <button class="all">
                         <!-- <a :href="'./article?articleId='+article._id">阅读全文</a> -->
-                        <router-link :to="{ name: 'article', query: {articleId: article._id} }" >阅读全文</router-link>
+                        <a href="javascript:;"  @click="toArticleRouter(article._id)" >阅读全文</a>
                     </button>
                 </article>
 
@@ -90,57 +90,28 @@
                 <!-- 留言 -->
                 <!-- 这里只帅选10条数据 -->
                 <section class="message">
-                    <ul>
-                        <li class="message-title">
-                            <h3>留言</h3>
-                        </li>
-                        <li class="message-item">
-                            <a href="javascript:;">
+                    <div class="message-title">
+                        <h3>
+                            留言
+                        </h3>
+                    </div>
+                    <ul v-if="messageData" v-for="item in messageData" :key="item.id">
+                        <li class="message-item" >
                                 <div class="message-i-image">
                                     <img src="../public/img/me.jpg" alt="">
                                 </div>
                                 <div class="message-i-content">
-                                    <p>Title</p>
-                                    <p>Content</p>
+                                    <p>
+                                        <router-link :to="{path: '/message'}">
+                                            {{item.userName}}
+                                        </router-link>
+                                    </p>
+                                    <p>{{item.userContent}}</p>
                                 </div>
-                            </a>
-                        </li>
-                        <li class="message-item">
-                            <a href="javascript:;">
-                                <div class="message-i-image">
-                                    <img src="../public/img/me.jpg" alt="">
-                                </div>
-                                <div class="message-i-content">
-                                    <p>Title</p>
-                                    <p>Content</p>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="message-item">
-                            <a href="javascript:;">
-                                <div class="message-i-image">
-                                    <img src="../public/img/me.jpg" alt="">
-                                </div>
-                                <div class="message-i-content">
-                                    <p>Title</p>
-                                    <p>Content</p>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="message-item">
-                            <a href="javascript:;">
-                                <div class="message-i-image">
-                                    <img src="../public/img/me.jpg" alt="">
-                                </div>
-                                <div class="message-i-content">
-                                    <p>Title</p>
-                                    <p>Content</p>
-                                </div>
-                            </a>
                         </li>
                     </ul>
                 </section>
-                <section class="label">
+                <!-- <section class="label">
                     <ul>
                         <li class="label-title">
                             <h3>标签</h3>
@@ -160,7 +131,7 @@
                             </span>
                         </li>
                     </ul>
-                </section>
+                </section> -->
             </div>
         </div>
         <div class="clearfix">
@@ -190,6 +161,7 @@ export default {
             SelectNumber: 3, // 文章数据帅选
             loading: true, // loding效果的boolean
             countType: 'all', // 文章总类型帅选
+            limit: 10, // 帅选指定留言数
         }
     },
     components: {
@@ -201,6 +173,8 @@ export default {
         this.markdown()
         // 获取文章数据
         this.getArticleData()
+        // 帅选指定留言数
+        this.getMessage()
     },
     computed: {
         // 解析markdown
@@ -209,6 +183,30 @@ export default {
         // }
     },
     methods: {
+        // 跳转到文章页，
+        toArticleRouter(_id) {
+            // alert('点击了！')
+            // 文章点击数+1
+            axios.get('/api/article', {
+                params: {
+                    _id: _id,
+                }
+            })
+
+                .then( result => {
+                    if (!result) {
+                        throw new Error('articlePulsDev result is Not Found')
+                    }
+                    if (result.data.status == '0') {
+                        this.$router.push({name: 'article', query: {articleId: _id}})
+                    } else if (result.data.status == '1') {
+                        throw new Error('文章点击数+1 失败了', result)
+                    }
+                })
+                .catch(err => {
+                    console.log('getArticleData Error:',err)
+                })
+        },
         // 分类
         shareOne(shareOne) {
             this.countType = shareOne // 传递需要输出的类型, [q, h, z]
@@ -241,10 +239,14 @@ export default {
                     if (!result) {
                         throw new Error('getArticleData result is Not Found')
                     }
-                    var data = result.data.result
-                    that.articleResult = data
-                    for (const re of that.articleResult) {
-                        re.content = marked(re.content)
+                    if (result.data.status == '0') {
+                        var data = result.data.result
+                        that.articleResult = data
+                        for (const re of that.articleResult) {
+                            re.content = marked(re.content)
+                        }
+                    } else {
+                        throw new Error(`error ${result.data}`)
                     }
                 })
                 .catch(err => {
@@ -267,6 +269,21 @@ export default {
             alert(CountType)
             this.countType = CountType
             this.getArticle()
+        },
+        // 获取10条留言
+        getMessage() {
+            let that = this
+            axios.get('/api/message',{
+                    params: {
+                        limit: that.limit
+                    }
+                })
+                .then( result => {
+                    that.messageData = result.data.result
+                })
+                .catch( err => {
+                    console.error(err)
+                })
         },
     }
 }
@@ -458,12 +475,12 @@ export default {
 #main .aside section.message ul {
 
 }
-#main .aside section.message ul li.message-title {
+#main .aside section.message .message-title {
     height: 25px;
     border-bottom: 3px solid #ddd;
     margin-bottom: 10px;
 }
-#main .aside section.message ul li.message-title h3 {
+#main .aside section.message .message-title h3 {
     font-size: 13px;
     color: #ccc;
 }
@@ -473,9 +490,10 @@ export default {
     padding: 10px 0;
     box-sizing: content-box!important; // 让padding占距离
 }
-#main .aside section.message ul li.message-item > a{
+#main .aside section.message ul li.message-item a{
     color: #999;
 }
+
 // 留言者头像
 #main .aside section.message ul li.message-item .message-i-image {
     height: 100%;

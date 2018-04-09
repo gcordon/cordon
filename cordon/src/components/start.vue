@@ -52,7 +52,7 @@ window.onload = function() {
 body {
     margin: 0!important;
     padding: 0!important;
-    background: url('../public/img/background_2.jpg') no-repeat red!important;
+    background: red!important;
     background-size:100% 120%;
 }
 #start {
@@ -60,6 +60,8 @@ body {
   top: 0;
   left: 0;
   color: #fff;
+  min-height: 740px;
+  background:url('../public/img/background_2.jpg');
 }
 #start #start-bg {
     position: absolute;

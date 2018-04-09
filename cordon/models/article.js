@@ -14,4 +14,13 @@ module.exports = {
     articleFindOne: function articleFindOne(_id) {
         return article.findById(_id).exec()
     },
+    // 文章点击量+1
+    articlePulsDev: function articlePulsDev(selectId) {
+        return article.findByIdAndUpdate(selectId, { $inc: { "dev": +1 } })
+        // return article.findById(selectId).update({ $inc: { "dev": +1 }})
+    },
+    // 添加一篇文章
+    articleAddOne: function articleAddOne(dataObj) {
+        return article.insertMany(dataObj)
+    },
 }

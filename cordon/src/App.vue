@@ -12,10 +12,4 @@ export default {
 </script>
 
 <style>
-body {
-    margin: 0!important;
-    padding: 0!important;
-    background: url('./public/img/background_2.jpg') no-repeat #333333;
-    background-size:100% 120%;
-}
 </style>

@@ -8,46 +8,22 @@
                 <input type="text" ref="userEmail" placeholder="你的邮箱哦！">
             </p>
             <p>
-                <button @click="sendMessage()" >发布评论</button>
+                <button @click="ValidatorMessage()" >发布评论</button>
             </p>
             <p>
                 <!-- 提示 -->
             </p>
         </div>
         <div class="message-content clearfix" >
-            <ul>
-                <li>
+            <ul v-if="messageData">
+                <li v-for="item in messageData" :key="item.id" >
                     <figure>
                         <img src="../public/img/me.jpg" alt="">
                         <figcaption>
-                            <h4>名字</h4>
-                            <span>2018-03-26 14:59:08</span>
+                            <h4>{{item.userName}}</h4>
+                            <span>{{item.created_at}}</span>
                             <p>
-                                评论内容
-                            </p>
-                        </figcaption>
-                    </figure>
-                </li>
-                 <li>
-                    <figure>
-                        <img src="../public/img/me.jpg" alt="">
-                        <figcaption>
-                            <h4>名字</h4>
-                            <span>2018-03-26 14:59:08</span>
-                            <p>
-                                评论内容
-                            </p>
-                        </figcaption>
-                    </figure>
-                </li>
-                 <li>
-                    <figure>
-                        <img src="../public/img/me.jpg" alt="">
-                        <figcaption>
-                            <h4>名字</h4>
-                            <span>2018-03-26 14:59:08</span>
-                            <p>
-                                评论内容
+                                {{item.userContent}}
                             </p>
                         </figcaption>
                     </figure>
@@ -57,28 +33,30 @@
   </div>
 </template>
 <script>
+import axios from 'axios'
 import validator from 'validator' // 验证
 export default {
     name: 'message-main',
     data() {
         return {
-
+            messageData: null
         }
     },
     mounted() {
-
+        // 获取留言
+        this.getMessage()
     },
     methods: {
-        // 提交评论
-        sendMessage() {
+        // 检测评论
+        ValidatorMessage() {
             // 检测表单
             let refs = this.$refs
-            let [c, n, e] = [refs.userContent.value, refs.userName.value, refs.userEmail.value]
+            let [c, u, e] = [refs.userContent.value, refs.userName.value, refs.userEmail.value]
             if (!validator.trim(c)) {
                 this.alertMessage('内容 为空！┭┮﹏┭┮', 'warning')
                 return false
             }
-            if (!validator.trim(n)) {
+            if (!validator.trim(u)) {
                 this.alertMessage('姓名 为空！┭┮﹏┭┮', 'warning')
                 return false
             }
@@ -90,7 +68,19 @@ export default {
                 this.alertMessage('邮箱 类型不对！(⊙o⊙)…', 'info')
                 return false
             }
-            this.alertMessage('评论成功', 'success')
+            let that = this
+            // 提交留言
+            axios.post('/api/message',{
+                    userName: u,
+                    userContent: c,
+                    userEmail: e,
+                })
+                .then( (result)=> {
+                    this.alertMessage('留言提交成功 ^_^ ~', 'success')
+                })
+                .catch( (err)=> {
+                    console.error(`提交留言 Error: ${err}`)
+                })
         },
         // elementUi 提示框
         alertMessage(ctx, type) {
@@ -101,10 +91,17 @@ export default {
                 duration: 1200
             })
         },
-        // 提交到node后台
-        sendMessage() {
-
-        }
+        // 获取留言
+        getMessage() {
+            let that = this
+            axios.get('/api/message')
+                .then( result => {
+                    that.messageData = result.data.result
+                })
+                .catch( err => {
+                    console.error(err)
+                })
+        },
     }
 }
 </script>
